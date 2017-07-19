@@ -18,6 +18,7 @@
 #include "particle_filter.h"
 
 using namespace std;
+default_random_engine rng;
 
 void ParticleFilter::init(double x, double y, double theta, double std[]) {
     // Seems to produce similar results with 50 particles and 1000 particles, might as well use less.
