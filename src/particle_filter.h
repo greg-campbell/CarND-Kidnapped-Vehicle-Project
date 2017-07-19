@@ -10,6 +10,7 @@
 #define PARTICLE_FILTER_H_
 
 #include "helper_functions.h"
+#include <random>
 
 struct Particle {
 
@@ -30,13 +31,13 @@ class ParticleFilter {
 	// Number of particles to draw
 	int num_particles; 
 	
-	
-	
 	// Flag, if filter is initialized
 	bool is_initialized;
 	
 	// Vector of weights of all particles
 	std::vector<double> weights;
+
+    std::default_random_engine rng;
 	
 public:
 	
@@ -97,6 +98,14 @@ public:
 	 *   the new set of particles.
 	 */
 	void resample();
+
+    /**
+     * transformation Transforms from vehicle coordinate space to map coordinate space.
+     * @param observations Vector of landmark observations in map space
+     * @param particle Particle in vehicle space
+     * @return Transformed vector of landmark observations in vehicle space
+     */
+    std::vector<LandmarkObs> transformation(const std::vector<LandmarkObs> &observations, Particle &particle);
 
 	/*
 	 * Set a particles list of associations, along with the associations calculated world x,y coordinates
