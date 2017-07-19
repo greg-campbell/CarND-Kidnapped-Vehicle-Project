@@ -99,14 +99,6 @@ public:
 	 */
 	void resample();
 
-    /**
-     * transformation Transforms from vehicle coordinate space to map coordinate space.
-     * @param observations Vector of landmark observations in map space
-     * @param particle Particle in vehicle space
-     * @return Transformed vector of landmark observations in vehicle space
-     */
-    std::vector<LandmarkObs> transformation(const std::vector<LandmarkObs> &observations, Particle &particle);
-
 	/*
 	 * Set a particles list of associations, along with the associations calculated world x,y coordinates
 	 * This can be a very useful debugging tool to make sure transformations are correct and assocations correctly connected

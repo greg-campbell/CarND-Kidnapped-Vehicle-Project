@@ -81,6 +81,24 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
     }
 }
 
+/**
+* transformation Transforms from vehicle coordinate space to map coordinate space.
+* @param observations Vector of landmark observations in map space
+* @param particle Particle in vehicle space
+* @return Transformed vector of landmark observations in vehicle space
+*/
+vector<LandmarkObs> transformation(const vector<LandmarkObs> &observations, Particle &particle) {
+    vector<LandmarkObs> transformed_observations;
+    double sin_t = sin(particle.theta);
+    double cos_t = cos(particle.theta);
+
+    for (const LandmarkObs &o : observations) {
+        transformed_observations.push_back({o.id, o.x*cos_t - o.y*sin_t + particle.x, o.x*sin_t + o.y*cos_t + particle.y});
+    }
+
+    return transformed_observations;
+}
+
 void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], 
 		std::vector<LandmarkObs> observations, Map map_landmarks) {
 
@@ -128,18 +146,6 @@ void ParticleFilter::resample() {
     }
 
     particles = new_particles;
-}
-
-vector<LandmarkObs> ParticleFilter::transformation(const vector<LandmarkObs> &observations, Particle &particle) {
-    vector<LandmarkObs> transformed_observations;
-    double sin_t = sin(particle.theta);
-    double cos_t = cos(particle.theta);
-
-    for (const LandmarkObs &o : observations) {
-        transformed_observations.push_back({o.id, o.x*cos_t - o.y*sin_t + particle.x, o.x*sin_t + o.y*cos_t + particle.y});
-    }
-
-    return transformed_observations;
 }
 
 Particle ParticleFilter::SetAssociations(Particle particle, std::vector<int> associations, std::vector<double> sense_x, std::vector<double> sense_y)
